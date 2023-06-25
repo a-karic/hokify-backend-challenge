@@ -11,6 +11,10 @@ This application was generated using [Create React App](https://github.com/faceb
 # Work Notes
 
 * Prepare project so I can have env for jest tests and also some running server so I can test it in the browser as well.
+* Before writing test I would like to have interfaces ready, according to the specs the input has to be an object {}. The key in all cases seems to be a string, but the value can be different (string, null, undefined, object). I will give it a name IUpdateObjectInput and use it in `updateObject` function. The return type should be a normal object, except that the array element can have "_id". Also it looks like there is no array nesting according to the specs, but I should ask this question.
+
+
+
 
 # Specs
 Link: https://gist.github.com/simllll/a130e1c81c66ab1a3c3cdb51025f95df#file-hokify-backend-coding-challenge1-md
