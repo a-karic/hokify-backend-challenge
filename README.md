@@ -12,6 +12,7 @@ This application was generated using [Create React App](https://github.com/faceb
 
 * Prepare project so I can have env for jest tests and also some running server so I can test it in the browser as well.
 * Before writing test I would like to have interfaces ready, according to the specs the input has to be an object {}. The key in all cases seems to be a string, but the value can be different (string, null, undefined, object). I will give it a name IUpdateObjectInput and use it in `updateObject` function. The return type should be a normal object, except that the array element can have "_id". Also it looks like there is no array nesting according to the specs, but I should ask this question.
+* Now that interfaces are ready, it is time to write some tests before implementing anything in the function. I will first cover generic tests, and then after that I will cover test cases given by github gist (specs from Hokify)
 
 
 

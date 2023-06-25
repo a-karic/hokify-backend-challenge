@@ -1,3 +1,5 @@
+import { updateObject } from "./../utils/updateObject";
+
 /**
  * Specs
  * 
@@ -12,31 +14,215 @@
 describe('updateObject function', () => {
   
   it('should update element of object by string path root.path.subpath', () => {
-    // TODO impl using given/when/then
+     // Given
+     const object = {
+      root: {
+        path: {
+          subpath: 'oldValue',
+        },
+      },
+    };
+
+    const input = {
+      'root.path.subpath': 'newValue',
+    };
+
+    const expected = {
+      root: {
+        path: {
+          subpath: 'newValue',
+        },
+      },
+    };
+
+    // When
+    const result = updateObject(object, input);
+
+    // Then
+    expect(result).toEqual(expected);
   });
 
   it('should update element of array by string path root.path.array[]', () => {
-    // TODO impl using given/when/then
+    // Given
+    const object = {
+      root: {
+        path: {
+          array: [
+            { _id: 1, value: 'oldValue1' },
+            { _id: 2, value: 'oldValue2' },
+          ],
+        },
+      },
+    };
+
+    const input = {
+      'root.path.array[]': { _id: 1, value: 'newValue' },
+    };
+
+    const expected = {
+      root: {
+        path: {
+          array: [
+            { _id: 1, value: 'newValue' },
+            { _id: 2, value: 'oldValue2' },
+          ],
+        },
+      },
+    };
+
+    // When
+    const result = updateObject(object, input);
+
+    // Then
+    expect(result).toEqual(expected);
   });
 
   it('should update element of array by string path root.path.array[_id]', () => {
-    // TODO impl using given/when/then
+    // Given
+    const object = {
+      root: {
+        path: {
+          array: [
+            { _id: 'id1', value: 'oldValue1' },
+            { _id: 'id2', value: 'oldValue2' },
+          ],
+        },
+      },
+    };
+
+    const input = {
+      'root.path.array[id2]': { value: 'newValue' },
+    };
+
+    const expected = {
+      root: {
+        path: {
+          array: [
+            { _id: 'id1', value: 'oldValue1' },
+            { _id: 'id2', value: 'newValue' },
+          ],
+        },
+      },
+    };
+
+    // When
+    const result = updateObject(object, input);
+
+    // Then
+    expect(result).toEqual(expected);
   });
 
   it('should remove element of object by string path root.path.subpath with null value', () => {
-    // TODO impl using given/when/then
+    // Given
+    const object = {
+      root: {
+        path: {
+          subpath: 'oldValue',
+        },
+      },
+    };
+
+    const input = {
+      'root.path.subpath': null,
+    };
+
+    const expected = {
+      root: {
+        path: {},
+      },
+    };
+
+    // When
+    const result = updateObject(object, input);
+
+    // Then
+    expect(result).toEqual(expected);
   });
 
   it('should remove element of array by string path root.path.array[] with null value', () => {
-    // TODO impl using given/when/then
+    // Given
+    const object = {
+      root: {
+        path: {
+          array: [
+            { _id: 1, value: 'value1' },
+            { _id: 2, value: 'value2' },
+          ],
+        },
+      },
+    };
+
+    const input = {
+      'root.path.array[]': null,
+    };
+
+    const expected = {
+      root: {
+        path: {
+          array: [],
+        },
+      },
+    };
+
+    // When
+    const result = updateObject(object, input);
+
+    // Then
+    expect(result).toEqual(expected);
   });
 
   it('should create element of object by string path root.path.subpath if it does not exist', () => {
-    // TODO impl using given/when/then
+    // Given
+    const object = {
+      root: {
+        path: {},
+      },
+    };
+
+    const input = {
+      'root.path.subpath': 'value',
+    };
+
+    const expected = {
+      root: {
+        path: {
+          subpath: 'value',
+        },
+      },
+    };
+
+    // When
+    const result = updateObject(object, input);
+
+    // Then
+    expect(result).toEqual(expected);
   });
 
   it('should create element of array by string path root.path.array[] if it does not exist', () => {
-    // TODO impl using given/when/then
+    // Given
+    const object = {
+      root: {
+        path: {},
+      },
+    };
+
+    const input = {
+      'root.path.array[]': { _id: 'id1', value: 'newValue' },
+    };
+
+    const expected = {
+      root: {
+        path: {
+          array: [{ _id: 'id1', value: 'newValue' }],
+        },
+      },
+    };
+
+    // When
+    const result = updateObject(object, input);
+
+    // Then
+    expect(result).toEqual(expected);
   });
 
   // Cases from https://gist.github.com/simllll/a130e1c81c66ab1a3c3cdb51025f95df#file-hokify-backend-coding-challenge1-md
