@@ -1,11 +1,11 @@
 export type IUpdateObjectInput = Record<string, string | number | null | undefined | Record<string, unknown>>;
 
 export interface CustomObject {
-    [x: string]: string | number | CustomObject | CustomObjectWithID[];
+    [x: string]: string | number | CustomObject | CustomObjectWithID[] | undefined;
 }
 
 export interface CustomObjectWithID extends CustomObject {
-    "_id": string | number;
+    "_id"?: string | number;
 }
 
 export const updateObject = (object: CustomObject, input: IUpdateObjectInput): CustomObject => {
@@ -32,8 +32,11 @@ export const updateObject = (object: CustomObject, input: IUpdateObjectInput): C
         // Get the array index or _id from the match
         const indexOrId = match[1];
 
+      // Get segment without id
+      const segmentWithoutId = segment.substring(0, segment.indexOf("["));
+
         // Get the array from the pointer
-        const array = pointer as CustomObjectWithID[];
+        const array = pointer[segmentWithoutId] as CustomObjectWithID[];
 
         // Check if the index or _id is valid
         if (indexOrId) {
@@ -148,7 +151,11 @@ export const updateObject = (object: CustomObject, input: IUpdateObjectInput): C
 
           // If the entry is found, update it with the input value
           if (entry) {
-            Object.assign(entry, inputValue);
+            const index = array.indexOf(entry);
+            const newEntry = {_id: entry._id };
+
+            Object.assign(newEntry, inputValue);
+            array[index] = newEntry;
           } else {
             const newEntry: CustomObjectWithID = {
                 _id: indexOrId,
@@ -158,6 +165,10 @@ export const updateObject = (object: CustomObject, input: IUpdateObjectInput): C
             // Push the new entry to the array
             array.push(newEntry);
           }
+
+        } else if (typeof inputValue == "string") {
+          array.push(inputValue as unknown as CustomObjectWithID);
+
         } else {
           // If the index or _id or array is empty, it means adding a new element to the array
           // Create a new entry with a random _id and the input value

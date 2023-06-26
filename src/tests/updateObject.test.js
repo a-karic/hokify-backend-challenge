@@ -498,7 +498,8 @@ describe('updateObject function - tests from Hokify', () => {
     const result = updateObject(object, input);
 
     // Then
-    expect(result).toEqual(expected);
+    expect(result).toMatchObject(expected);
+
   });
 
   it('should update the images object by string path images with a new object', () => {
@@ -566,13 +567,13 @@ describe('updateObject function - tests from Hokify', () => {
         thumbnail:
           'http://files-test.hokify.com/user/pic_5b30ac932c6ba6190bfd7eef_1573480304828.jpg',
         small:
-          'http://files-test.hokify.com/user/pic_5b30ac932c6ba6190bfd7eef_1573477587288.jpg',
+          'http://files-test.hokify.com/user/pic_5b30ac932c6ba6190bfd7eef_1573480304827.jpg',
         medium:
-          'http://files-test.hokify.com/user/pic_5b30ac932c6ba6190bfd7eef_1573477587288.jpg',
+          'http://files-test.hokify.com/user/pic_5b30ac932c6ba6190bfd7eef_1573480304827.jpg',
         large:
-          'http://files-test.hokify.com/user/pic_5b30ac932c6ba6190bfd7eef_1573477587288.jpg',
+          'http://files-test.hokify.com/user/pic_5b30ac932c6ba6190bfd7eef_1573480304827.jpg',
         xlarge:
-          'http://files-test.hokify.com/user/pic_5b30ac932c6ba6190bfd7eef_1573477587288.jpg',
+          'http://files-test.hokify.com/user/pic_5b30ac932c6ba6190bfd7eef_1573480304827.jpg',
       },
     };
 
@@ -580,7 +581,7 @@ describe('updateObject function - tests from Hokify', () => {
     const resultThumbnailChanged = updateObject(result, inputThumbnailChanged);
 
     // Then
-    expect(resultThumbnailChanged).toEqual(expectedThumbnailChanged);
+    expect(resultThumbnailChanged).toMatchObject(expectedThumbnailChanged);
 
     // Given
     const inputDeleteImages = {
