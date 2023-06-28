@@ -16,6 +16,7 @@ This application was generated using [Create React App](https://github.com/faceb
 * Since the tests are ready, it is time to implement function `updateObject`. Lets see if the AI can help me to implement this. AI generated some code, lets see what I have to fix. Generated code is really messy, I will have to split it into multiple funtions since it is really readable. Also some tests are failing, so I will first try to fix these failing tests. I managed to fix the code, so the tests are passing now. However, the code is really bad and complicated so I will have to refactor it later.
 * The function is implemented so I am going to add tests with the specs required by Hokify. Some of tests are failing but it is fine, I am going to fix `updateObject` function
 * Some tests for edge cases provided by Hokify are stil failing. During the debugging I found out some matchers were wrong and some exepcted data was also wrong, so I also fixed these tests. The function `updateObject` is now completed.
+* Now that all tests are passing, its time to refactor the function `updateObject`. Original code is really messy and hard to follow. Also documentation is missing. After some time spending refactoring the function, the code is much better now and all tests are still passing.
 
 
 
