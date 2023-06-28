@@ -17,6 +17,7 @@ This application was generated using [Create React App](https://github.com/faceb
 * The function is implemented so I am going to add tests with the specs required by Hokify. Some of tests are failing but it is fine, I am going to fix `updateObject` function
 * Some tests for edge cases provided by Hokify are stil failing. During the debugging I found out some matchers were wrong and some exepcted data was also wrong, so I also fixed these tests. The function `updateObject` is now completed.
 * Now that all tests are passing, its time to refactor the function `updateObject`. Original code is really messy and hard to follow. Also documentation is missing. After some time spending refactoring the function, the code is much better now and all tests are still passing.
+* I realized that securty handling is missing (XSS attack), so this should also be covered. For this purpse I have to implement sanitization of input. I will add some tests first and then the code.
 
 
 

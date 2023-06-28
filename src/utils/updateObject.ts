@@ -1,15 +1,12 @@
-export type IUpdateObjectInputValue  = string | number | null | undefined | Record<string, unknown>;
-export type IUpdateObjectInput = Record<string, IUpdateObjectInputValue>;
-export type IId = string | number;
-export type ICustomObjectValue = string | number | ICustomObject | ICustomObjectWithID[] | undefined;
+import { sanitizeInput } from './sanitizeInput';
 
-export interface ICustomObject {
-    [x: string]: ICustomObjectValue;
-}
-
-export interface ICustomObjectWithID extends ICustomObject {
-    "_id"?: IId;
-}
+import { 
+  ICustomObject, 
+  ICustomObjectWithID, 
+  IUpdateObjectInput, 
+  IUpdateObjectInputValue,
+  IId,
+} from './interfaces';
 
 /**
  * Updates an object with the given input values according to the following specs:
@@ -59,14 +56,17 @@ export interface ICustomObjectWithID extends ICustomObject {
  */
 export const updateObject = (object: ICustomObject, input: IUpdateObjectInput): ICustomObject => {
 
+  // Sanitize input to prevent any kind of attack (XSS, SQL injection.. etc)
+  const sanitizedInput = sanitizeInput(input);
+
   // Make a copy of the object to avoid mutating the original
   const updatedObject = JSON.parse(JSON.stringify(object));
 
   // Loop through the input keys
-  for (const key of Object.keys(input)) {
+  for (const key of Object.keys(sanitizedInput)) {
     const segments = key.split(".");
     const lastSegment = segments[segments.length - 1];
-    const inputValue = input[key];
+    const inputValue = sanitizedInput[key];
     const match = lastSegment.match(/\[(\d*|.*)\]/);
     const pointer = findOrCreatePointer(key, updatedObject);
 

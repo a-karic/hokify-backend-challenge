@@ -608,3 +608,42 @@ describe('updateObject function - tests from Hokify', () => {
   });
 
 });
+
+describe("updateObject function - security", () => {
+
+  // Check if the input contains any malicious code or data
+  it("should sanitize or reject the input if it contains any malicious content", () => {
+    // Given: an input with malicious content
+    const maliciousInput = {"name": "<script>alert('XSS')</script>"};
+
+    // When: calling the function with the malicious input
+    const output = updateObject({}, maliciousInput);
+
+    // Then: expect the output to be sanitized or rejected
+    expect(output.name).not.toEqual(maliciousInput.name); // sanitized
+  });
+
+  // Check if the input contains any HTML tags
+  it("should sanitize or reject the input if it contains any HTML tags", () => {
+    // Given: an input with HTML tags
+    const htmlInput = {"name": "<script>alert('XSS')</script>"};
+
+    // When: calling the function with the HTML input
+    const output = updateObject({}, htmlInput);
+
+    // Then: expect the output to be sanitized or rejected
+    expect(output.name).not.toEqual(htmlInput.name); // sanitized
+  });
+
+  // Check if the input contains any URLs
+  it("should sanitize or reject the input if it contains any URLs", () => {
+    // Given: an input with URLs
+    const urlInput = {"name": "http://example.com/?q=<script>alert('XSS')</script>"};
+
+    // When: calling the function with the URL input
+    const output = updateObject({}, urlInput);
+
+    // Then: expect the output to be sanitized or rejected
+    expect(output.name).not.toEqual(urlInput.name); // sanitized
+  });
+});
