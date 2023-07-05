@@ -94,7 +94,7 @@ const removeIdFromSegment = (segment: string) => segment.substring(0, segment.in
 
 const modifyArraySegment = (segmentName: string, arrayMatch: RegExpMatchArray, pointer: ICustomObject, inputValue: IUpdateObjectInputValue) => {
   // Get the index or _id from the segment match array or the segment value
-  const indexOrId = arrayMatch[1] || (inputValue ? inputValue["_id"] : null) as IId;
+  const indexOrId = arrayMatch[1] || (inputValue ? (inputValue as ICustomObjectWithID)["_id"] : null) as IId;
   // Get the segment name without the id
   const segmentWithoutId = segmentName.substring(0, segmentName.indexOf("["));
 

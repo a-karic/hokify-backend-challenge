@@ -1,7 +1,8 @@
 import React from 'react'
+import { ObjectTable } from "./components/ObjectTable/ObjectTable";
 
 const App = () => {
-  return <div>TODO: implement something where we can test updateObject function</div>
+  return <ObjectTable />
 }
 
 export default App;

@@ -37,7 +37,7 @@ export const sanitizeInputValue = (value: IUpdateObjectInputValue | unknown): IU
 
     for (const key in value) {
       const sanitizedKey = removeInvalidCharsForObjectKey(key);
-      sanitizedObject[sanitizedKey] = sanitizeInputValue(value[key]);
+      sanitizedObject[sanitizedKey] = sanitizeInputValue((value as Record<string, unknown>)[key]);
     }
 
     return sanitizedObject;
