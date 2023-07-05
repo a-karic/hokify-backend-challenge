@@ -8,6 +8,9 @@
 
 This application was generated using [Create React App](https://github.com/facebook/create-react-app). It has all the standard setups.
 
+![image](https://github.com/a-karic/hokify-backend-challenge/assets/3630008/f5ab785c-af63-4994-a358-5eb570c94de6)
+
+
 # Work Notes
 
 * Prepare project so I can have env for jest tests and also some running server so I can test it in the browser as well.
