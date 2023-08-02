@@ -14,10 +14,10 @@ import Container from "@mui/material/Container";
 import { IObjectRecord, objectService } from "../../services/ObjectService";
 import { IUpdateObjectInput } from "../../utils/interfaces";
 import { updateObject } from "../../utils/updateObject";
-import ConfirmDialogWithInput from "../ConfirmDialogWithInput/ConfirmDialogWithInput";
-import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
+import { EConfirmDialogType, ConfirmDialog } from "../ConfirmDialog/ConfirmDialog";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
+import { JsonOutput } from "../JsonOutput/JsonOutput";
 
 interface Column {
   id: 'id' | 'data';
@@ -60,12 +60,10 @@ export const ObjectTable = () => {
   
       fetchData();
     }, []);
-  
+
     // define a handler function that calls the updateObject function with the input value and updates the selected object state
-    const handleUpdate = useCallback((object: IObjectRecord, input: string) => {
+    const handleUpdate = useCallback((object: IObjectRecord, inputValue: IUpdateObjectInput) => {
       try {
-        // parse the input value as an update object input interface
-        const inputValue = JSON.parse(input) as IUpdateObjectInput;
         // find the index of the object in the objects array
         const objectIndex = objects.indexOf(object);
   
@@ -168,35 +166,48 @@ export const ObjectTable = () => {
                   return (
                     <TableRow hover tabIndex={-1} key={row.id}>
                       {columns.map((column) => {
-                        const value = row[column.id];
+                        if (column.id === "id") {
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {row[column.id]}
+                            </TableCell>
+                          );
+                        }
+
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {JSON.stringify(value)}
+                            <JsonOutput jsonValue={row[column.id]} />
                           </TableCell>
                         );
                       })}
                     <TableCell key={"actions"}>
                     <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                      <ConfirmDialogWithInput 
-                        buttonLabel="Edit"
-                        buttonIcon="edit"
-                        buttonSize="small" 
-                        inputFieldLabel="JSON"
+                      <ConfirmDialog 
+                        type={EConfirmDialogType.JSON_INPUT}
+                        button={{
+                          label: "Edit",
+                          icon: "edit",
+                          size: "small"
+                        }}
                         dialogTitle="Edit Existing Object"
                         dialogText="
                           Enter the JSON values you want to update in the text box below. 
                           You can use keys, dot notation, brackets and null to edit objects, nested objects and arrays. 
                           See the examples for more details."
                         cancelButtonLabel="Cancel"
-                        saveButtonLabel="Save"
-                        onSave={input => { handleUpdate(row, input) }} 
+                        confirmButtonLabel="Save"
+                        placeholder="JSON"
+                        value={row.data}
+                        onConfirm={(jsonObject) => handleUpdate(row, jsonObject as IUpdateObjectInput)} 
                       />
                       <Box sx={{m: 1}} />
                       <ConfirmDialog 
-                        buttonLabel="Delete"
-                        buttonColor="error"
-                        buttonIcon="delete"
-                        buttonSize="small"
+                        button={{
+                          label: "Delete",
+                          color: "error",
+                          icon: "delete",
+                          size: "small"
+                        }}
                         dialogTitle="Are you sure?"
                         dialogText="Please be careful, once you delete an object, you cannot restore it."
                         cancelButtonLabel="Cancel"
@@ -220,15 +231,18 @@ export const ObjectTable = () => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        <ConfirmDialogWithInput 
-          buttonLabel="Add new object"
-          buttonSize="large"
-          inputFieldLabel="ID"
+        <ConfirmDialog
+          type={EConfirmDialogType.TEXT_INPUT}
+          button={{
+            label: "Add new object",
+            size: "large",
+          }}
+          placeholder="ID"
           dialogTitle="Add a new object"
           dialogText=""
           cancelButtonLabel="Cancel"
-          saveButtonLabel="Add"
-          onSave={handleAdd} 
+          confirmButtonLabel="Add"
+          onConfirm={(input) => handleAdd(input as string)} 
         />
       </Paper>
       </Container>

@@ -6,66 +6,47 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Icon from '../Icon/Icon';
-
-// Define an interface for the props of the component
-interface IConfirmDialogWithInput {
-  buttonLabel: string;
-  buttonColor?: "error" | "inherit" | "primary" | "secondary" | "success" | "info" | "warning";
-  buttonIcon?: "edit" | "delete";
-  buttonSize?: "small" | "medium" | "large";
-  inputFieldLabel: string;
-  dialogTitle: string;
-  dialogText: string;
-  cancelButtonLabel: string;
-  saveButtonLabel: string;
-  onSave: (input: string) => void;
-}
+import Icon from './Icon';
+import { IConfirmDialogProps } from './ConfirmDialog';
 
 // Define a React component that renders a button and a dialog with an input field and two buttons
-export default function ConfirmDialogWithInput(props: IConfirmDialogWithInput) {
+export const ConfirmDialogTextInput = (props: IConfirmDialogProps) => {
   // Use React hooks to manage the state of the dialog and the input field
   const [open, setOpen] = React.useState(false);
-  const [input, setInput] = React.useState<string>("");
+  const [text, setText] = React.useState<string>("");
 
   // Destructure the props for convenience
   const {
-    buttonLabel,
-    buttonColor,
-    buttonIcon,
-    buttonSize,
-    inputFieldLabel,
+    button,
     dialogTitle,
     dialogText,
+    placeholder,
     cancelButtonLabel,
-    saveButtonLabel,
-    onSave,
+    confirmButtonLabel,
+    onCancel,
+    onConfirm,
   } = props;
 
   // Define a function to handle the change event of the input field
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // Set the input state to the event target value
-    setInput(event.target.value);
+  const handleInputChange = (input: string) => {
+    setText(input);
   };
 
   // Define a function to handle the click event of the button
   const handleClickOpen = () => {
-    // Set the open state to true
     setOpen(true);
   };
 
   // Define a function to handle the close event of the dialog
   const handleClose = () => {
-    // Set the open state to false
     setOpen(false);
+    onCancel && onCancel();
   };
 
-  // Define a function to handle the save event of the dialog
-  const handleSave = () => {
-    // Set the open state to false
+  // Define a function to handle the confirm event of the dialog
+  const handleConfirm = () => {
     setOpen(false);
-    // Call the onSave prop with the input value
-    onSave(input);
+    onConfirm && onConfirm(text);
   };
 
   // Try to render the component and catch any errors
@@ -74,31 +55,31 @@ export default function ConfirmDialogWithInput(props: IConfirmDialogWithInput) {
       <div>
         <Button 
           variant="outlined" 
-          startIcon={<Icon icon={buttonIcon} />} 
-          color={buttonColor} 
+          startIcon={<Icon icon={button.icon} />} 
+          color={button.color} 
           onClick={handleClickOpen} 
-          size={buttonSize}
+          size={button.size}
         >
-          {buttonLabel}
+          {button.label}
         </Button>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogContent>
             <DialogContentText>{dialogText}</DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label={inputFieldLabel}
-              type="text"
-              fullWidth
-              variant="standard"
-              onChange={handleInputChange}
-            />
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label={placeholder}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={event => handleInputChange(event.target.value)}
+              />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>{cancelButtonLabel}</Button>
-            <Button onClick={handleSave}>{saveButtonLabel}</Button>
+            <Button onClick={handleConfirm}>{confirmButtonLabel}</Button>
           </DialogActions>
         </Dialog>
       </div>
