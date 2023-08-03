@@ -5,12 +5,16 @@ import themes from './themes';
 
 interface IJsonInputProps {
   placeholder: {};
+  height?: number;
+  width?: number;
   onChange: (jsonObject: {}, error: boolean) => void;
 }
 
 export const JsonInput = (props: IJsonInputProps) => {
 
   const {
+    height = 150,
+    width = 350,
     placeholder,
     onChange,
   } = props;
@@ -25,7 +29,8 @@ export const JsonInput = (props: IJsonInputProps) => {
           placeholder={ placeholder }
           locale={ locale }
           colors={themes.light_mitsuketa_tribute}
-          height='150px'
+          height={`${height}px`}
+          width={`${width}px`}
           onChange={handleOnChange}
       />
     );

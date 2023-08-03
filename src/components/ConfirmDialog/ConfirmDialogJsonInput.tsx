@@ -69,6 +69,8 @@ export const ConfirmDialogJsonInput = (props: IConfirmDialogProps) => {
             <DialogContentText>{dialogText}</DialogContentText>
                <JsonInput 
                   placeholder={value || {}}
+                  height={550}
+                  width={550}
                   onChange={handleInputChange}
               />
           </DialogContent>
